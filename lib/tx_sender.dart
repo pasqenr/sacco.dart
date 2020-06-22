@@ -7,6 +7,9 @@ import 'package:sacco/sacco.dart';
 /// Allows to easily send a [StdTx] using the data contained inside the
 /// specified [Wallet].
 class TxSender {
+  /// Http client used to broadcast the transaction to the network.
+  static http.Client client = http.Client();
+
   /// Broadcasts the given [stdTx] using the info contained
   /// inside the given [wallet].
   /// Returns the hash of the transaction once it has been send, or throws an
@@ -24,7 +27,7 @@ class TxSender {
     final requestBodyJson = jsonEncode(requestBody);
 
     // Get the response
-    final response = await http.Client().post(apiUrl, body: requestBodyJson);
+    final response = await client.post(apiUrl, body: requestBodyJson);
     if (response.statusCode != 200) {
       throw Exception(
         "Expected status code 200 but got ${response.statusCode} - ${response.body}",
